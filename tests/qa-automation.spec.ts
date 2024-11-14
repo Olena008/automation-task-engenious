@@ -1,24 +1,25 @@
 import { test, expect } from '@playwright/test';
+import { credentials } from '../config/credentials';
+import * as selectors from '../config/selectors';
 
 test.describe('Automated Login Test for Engenious University', () => {
-const userEmail = 'gejeboc116@gianes.com';
-const userPassword = 'zJ8bpk6Jh2JKYdi';
+  const { email, password } = credentials;
 
-test('Should successfully log into Engenious University', async ({ page }) => {
-  await page.goto('https://university.engenious.io/');
-  
-  await page.click('button:has-text("Sign In")');
-  
-  await page.click('a.MuiTypography-root[href="/login"]');
-  
-  await page.fill('input[name="email"]', userEmail);
-  await page.fill('input[name="password"]', userPassword);
+  test('Should successfully log into Engenious University', async ({ page }) => {
+    await page.goto('/');
+    
+    await page.click(selectors.signInButton);
+    
+    await page.click(selectors.loginTab);
+    
+    await page.fill(selectors.emailInput, email);
+    await page.fill(selectors.passwordInput, password);
 
-  await page.click('button.MuiButton-containedPrimary[type="submit"]');
+    await page.click(selectors.submitButton);
 
-  await expect(page.locator('.Header_burger__BqrYh [aria-label="open drawer"]')).toBeVisible();
-  await page.click('.Header_burger__BqrYh [aria-label="open drawer"]');
+    await expect(page.locator(selectors.headerBurger)).toBeVisible();
+    await page.click(selectors.headerBurger);
 
     await expect(page.getByRole('heading', { name: 'hhjfe geger' })).toBeVisible();
-});
+  });
 });
